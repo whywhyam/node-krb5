@@ -1,4 +1,5 @@
 #include <string>
+#include <string.h>
 #include <node.h>
 #include <v8.h>
 #include <krb5.h>
