@@ -2,7 +2,7 @@ node-krb5
 =========
 ### Node.js native addon for simple krb5 user authentication
 
-The module currently builds on linux with krb5 headers and libs (tested on centos) and osx (tested on lion); windows coming soon.
+The module currently builds on linux with krb5 headers and libs (tested on centos), osx (tested on lion and mountain lion) and windows (tested on windows 8.1 with MIT Kerberos)
 
 Installation
 ------------
@@ -11,6 +11,14 @@ You can install with `npm`:
 
 ``` bash
 $ npm install -g node-krb5
+```
+
+On windows you will need to have MIT Kerberos (http://web.mit.edu/Kerberos/dist/) installed. Remember to select the SDK option during installation.
+
+You will also need to set the environment variable MITKRB5 to the MIT Kerberos home. 
+
+```
+set MITKRB5=C:\Program Files\MIT\Kerberos
 ```
 
 How to Use
@@ -33,7 +41,7 @@ License
 
 (The MIT License)
 
-Copyright (c) 2012 Luca Fornili &lt;qesuto@gmail.com&gt;
+Copyright (c) 2012-2014 Luca Fornili &lt;qesuto@gmail.com&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

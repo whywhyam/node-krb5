@@ -2,7 +2,9 @@
 #include <string.h>
 #include <node.h>
 #include <v8.h>
+extern "C" {
 #include <krb5.h>
+}
 
 using namespace v8;
 using namespace node;
