@@ -89,8 +89,8 @@ NAN_METHOD(Authenticate) {
 	}
 
     Nan::Callback *callback = new Nan::Callback(info[2].As<v8::Function>());
-    std::string principal(*v8::String::AsciiValue(info[0]));
-    std::string password(*v8::String::AsciiValue(info[1]));
+    std::string principal(*v8::String::Utf8Value(info[0]));
+    std::string password(*v8::String::Utf8Value(info[1]));
 
     Nan::AsyncQueueWorker(new krb5Worker(callback, principal, password));
     info.GetReturnValue().SetUndefined();
