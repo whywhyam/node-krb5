@@ -89,8 +89,8 @@ NAN_METHOD(Authenticate) {
 	}
 
     Nan::Callback *callback = new Nan::Callback(info[2].As<v8::Function>());
-    std::string principal(*Nan::AsciiString(info[0]));
-    std::string password(*Nan::AsciiString(info[1]));
+    std::string principal(*v8::AsciiValue(info[0]));
+    std::string password(*v8::AsciiValue(info[1]));
 
     Nan::AsyncQueueWorker(new krb5Worker(callback, principal, password));
     info.GetReturnValue().SetUndefined();
@@ -98,7 +98,7 @@ NAN_METHOD(Authenticate) {
 
 
 NAN_MODULE_INIT(init) {
-  Set(target, Nan::New<v8::String>("authenticate").ToLocalChecked(),
+    Nan::Set(target, Nan::New<v8::String>("authenticate").ToLocalChecked(),
     Nan::GetFunction(Nan::New<v8::FunctionTemplate>(Authenticate)).ToLocalChecked());
 }
 
