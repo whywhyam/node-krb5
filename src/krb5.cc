@@ -76,30 +76,30 @@ class krb5Worker : public Nan::AsyncWorker {
 NAN_METHOD(Authenticate) {
     Nan::HandleScope();
 
-	if(args.Length() < 3)
+	if(info.Length() < 3)
 	{  	
 		printf("too few arguments.\n");
-        Nan::ReturnValue(Nan::New<v8::String>("too few arguments"));
+        info.GetReturnValue().Set(Nan::New("too few arguments").ToLocalChecked());
 	}
 
-	if(!args[0]->IsString() || !args[1]->IsString() || !args[2]->IsFunction())
+	if(!info[0]->IsString() || !info[1]->IsString() || !info[2]->IsFunction())
 	{	
 		printf("wrong arguments.\n");
-        Nan::ReturnValue(Nan::New<v8::String>("wrong arguments"));
+        info.GetReturnValue().Set(Nan::New("wrong arguments").ToLocalChecked());
 	}
 
-    Nan::Callback *callback = new Nan::Callback(args[2].As<v8::Function>());
-    std::string principal(*Nan::AsciiString(args[0]));
-    std::string password(*Nan::AsciiString(args[1]));
+    Nan::Callback *callback = new Nan::Callback(info[2].As<v8::Function>());
+    std::string principal(*Nan::AsciiString(info[0]));
+    std::string password(*Nan::AsciiString(info[1]));
 
     Nan::AsyncQueueWorker(new krb5Worker(callback, principal, password));
-    Nan::ReturnUndefined();
+    info.GetReturnValue().SetUndefined();
 }
 
 
-void init(v8::Handle<v8::Object> exports) {
-  exports->Set(Nan::New<v8::String>("authenticate"),
-    Nan::New<v8::FunctionTemplate>(Authenticate)->GetFunction());
+NAN_MODULE_INIT(init) {
+  Set(target, Nan::New<v8::String>("authenticate").ToLocalChecked(),
+    Nan::GetFunction(Nan::New<v8::FunctionTemplate>(Authenticate)).ToLocalChecked());
 }
 
 NODE_MODULE(krb5, init);
