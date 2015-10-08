@@ -8,10 +8,10 @@ extern "C" {
 }
 
 
-class krb5Worker : public NanAsyncWorker {
+class krb5Worker : public Nan::AsyncWorker {
     public:
-        krb5Worker(NanCallback *callback, const std::string& a_principal, const std::string& a_password):
-            NanAsyncWorker(callback), m_principal(a_principal), m_password(a_password) {}
+        krb5Worker(Nan::Callback *callback, const std::string& a_principal, const std::string& a_password):
+            Nan::AsyncWorker(callback), m_principal(a_principal), m_password(a_password) {}
     
         ~krb5Worker() {}
 
@@ -61,9 +61,9 @@ class krb5Worker : public NanAsyncWorker {
         }
 
         void HandleOKCallback () {
-            NanScope();
+            Nan::Scope();
 
-            v8::Local<v8::Value> argv[] = { NanNull() };
+            v8::Local<v8::Value> argv[] = { Nan::Null() };
 
             callback->Call(1, argv);
         }
@@ -74,32 +74,32 @@ class krb5Worker : public NanAsyncWorker {
 };
 
 NAN_METHOD(Authenticate) {
-    NanScope();
+    Nan::Scope();
 
 	if(args.Length() < 3)
 	{  	
 		printf("too few arguments.\n");
-		NanReturnValue(NanNew<v8::String>("too few arguments"));
+        Nan::ReturnValue(Nan::New<v8::String>("too few arguments"));
 	}
 
 	if(!args[0]->IsString() || !args[1]->IsString() || !args[2]->IsFunction())
 	{	
 		printf("wrong arguments.\n");
-		NanReturnValue(NanNew<v8::String>("wrong arguments"));
+        Nan::ReturnValue(Nan::New<v8::String>("wrong arguments"));
 	}
 
-    NanCallback *callback = new NanCallback(args[2].As<v8::Function>());
-    std::string principal(*NanAsciiString(args[0]));
-    std::string password(*NanAsciiString(args[1]));
+    Nan::Callback *callback = new Nan::Callback(args[2].As<v8::Function>());
+    std::string principal(*Nan::AsciiString(args[0]));
+    std::string password(*Nan::AsciiString(args[1]));
 
-    NanAsyncQueueWorker(new krb5Worker(callback, principal, password));
-    NanReturnUndefined();
+    Nan::AsyncQueueWorker(new krb5Worker(callback, principal, password));
+    Nan::ReturnUndefined();
 }
 
 
 void init(v8::Handle<v8::Object> exports) {
-  exports->Set(NanNew<v8::String>("authenticate"),
-    NanNew<v8::FunctionTemplate>(Authenticate)->GetFunction());
+  exports->Set(Nan::New<v8::String>("authenticate"),
+    Nan::New<v8::FunctionTemplate>(Authenticate)->GetFunction());
 }
 
 NODE_MODULE(krb5, init);
