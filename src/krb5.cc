@@ -61,7 +61,7 @@ class krb5Worker : public Nan::AsyncWorker {
         }
 
         void HandleOKCallback () {
-            Nan::Scope();
+            Nan::HandleScope();
 
             v8::Local<v8::Value> argv[] = { Nan::Null() };
 
@@ -74,7 +74,7 @@ class krb5Worker : public Nan::AsyncWorker {
 };
 
 NAN_METHOD(Authenticate) {
-    Nan::Scope();
+    Nan::HandleScope();
 
 	if(args.Length() < 3)
 	{  	
